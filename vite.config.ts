@@ -8,8 +8,8 @@ export default defineConfig({
 		VitePWA({	
 			registerType: 'autoUpdate',
 			manifest: {
-				name: 'SvelteKit PWA Template',
-				short_name: 'PWA Template',
+				name: 'God Bless You',
+				short_name: 'godblessyou',
 				description: 'SvelteKit PWA Template Application',
 				theme_color: '#ffffff',
 				icons: [
