@@ -26,4 +26,4 @@ patches:
     name: godblessyou-app
 images:
 - name: ghcr.io/n18011/godblessyou/app
-  newTag: 03cbb690e55ffcb964f3ca440dd1cd0c8b2da82f
+  newTag: 6f78e04d5a727541d40c398d976ce67e3957bd22
