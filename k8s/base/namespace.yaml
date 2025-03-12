@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: godblessyou-dev
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: godblessyou-prod
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: argocd 
