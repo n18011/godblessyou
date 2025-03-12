@@ -51,17 +51,35 @@ echo "Creating kind cluster..."
 kind create cluster --config kind-config.yaml --name "${CLUSTER_NAME}"
 
 # ローカルレジストリをクラスタに接続
-docker network connect kind kind-registry || true
+if ! docker network inspect kind | grep -q 'kind-registry'; then
+  echo "Connecting registry to kind network..."
+  docker network connect kind kind-registry || true
+fi
+
+# クラスタの状態を確認
+echo "Waiting for cluster to be ready..."
+kubectl wait --for=condition=Ready nodes --all --timeout=300s
 
 # Ingressコントローラーのインストール
 echo "Installing NGINX Ingress Controller..."
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+
+# admission webhookのセットアップを待機
+echo "Waiting for admission webhook to be ready..."
+kubectl wait --namespace ingress-nginx \
+  --for=condition=ready pod \
+  --selector=app.kubernetes.io/component=admission-webhook \
+  --timeout=300s || true
 
 # Ingressコントローラーの準備完了を待機
 echo "Waiting for Ingress Controller to be ready..."
 kubectl wait --namespace ingress-nginx \
   --for=condition=ready pod \
   --selector=app.kubernetes.io/component=controller \
-  --timeout=90s
+  --timeout=600s
+
+# すべてのPodの状態を確認
+echo "Checking all pods..."
+kubectl get pods --all-namespaces
 
 echo "Kind cluster setup completed successfully!" 
