@@ -1,37 +1,11 @@
 ## このプロジェクトで使用している技術スタック
 
-### コア技術
-
-1. **SvelteKit**
-
-   - バージョン: @sveltejs/kit@2.5.4
-   - フルスタックフレームワーク
-
-2. **Prisma**
-
-   - バージョン: @prisma/client@6.4.1
-   - ORM（Object-Relational Mapping）
-   - データベースマイグレーション
-   - 型安全なデータベースアクセス
-   - PostgreSQLとの統合
-
-### フロントエンド技術
-
-1. **TailwindCSS**
-
-   - バージョン: 3.4.9
-   - ユーティリティファーストCSSフレームワーク
-   - カスタマイズ可能なデザインシステム
-
-2. **テスト環境**
-   - Vitest: 1.3.1（ユニットテスト）
-   - Playwright: 1.51.0（E2Eテスト）
-   - Storybook: 8.4.0（UIコンポーネント）
-
-3. **その他主要パッケージ**
-   - Chart.js: データ可視化
-   - jsPDF: PDFレポート生成
-   - web-push: プッシュ通知
+- フロントエンド: SvelteKit
+- バックエンド: SvelteKit (Server)
+- データベース: PostgreSQL
+- ORM: Prisma
+- コンテナオーケストレーション: Kubernetes
+- 開発言語: TypeScript
 
 ### 開発ツール
 
@@ -50,19 +24,34 @@
 
 3. **プロジェクトのセットアップ**
 
-   ```bash
-   # リポジトリのクローン
-   git clone https://github.com/xxxxx/xxxxx.git
+### セットアップ手順
+1. 依存関係のインストール
+```bash
+bun install
+```
 
-   # 依存関係のインストール
-   bun install
+2. 開発サーバーの起動
+```bash
+bun run dev
+```
 
-   # データベースのセットアップ
-   npx prisma migrate dev
+3. データベースのセットアップ
+```bash
+bunx prisma generate
+bunx prisma migrate dev
+```
 
-   # 開発サーバーの起動
-   bun run dev
-   ```
+4. Kubernetesクラスタの準備
+```bash
+kind create cluster
+kubectl apply -f k8s/
+```
+
+### 開発ガイドライン
+- コードスタイル: Prettier + ESLint
+- テスト: Vitest + Playwright
+- Git: Conventional Commits
+- CI/CD: GitHub Actions
 
 ### 開発ワークフロー
 
