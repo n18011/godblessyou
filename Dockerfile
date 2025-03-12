@@ -3,6 +3,7 @@ FROM node:20-slim AS builder
 
 WORKDIR /app
 
+RUN apt install -y curl
 # bunのインストール
 RUN curl -fsSL https://bun.sh/install | bash
 
