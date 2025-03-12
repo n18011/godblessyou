@@ -39,6 +39,8 @@ jobs:
 
       - name: Set up migrate
         run: npx prisma migrate reset --force
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/godblessyou_test
 
       - name: Set up Prisma
         run: npx prisma generate
