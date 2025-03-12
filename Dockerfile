@@ -1,10 +1,10 @@
 # ビルドステージ
-FROM node:20-slim AS builder
+FROM oven/bun:latest AS builder
 
 WORKDIR /app
 
 # bunのインストール
-RUN apt-get update && apt-get install -y curl && curl -fsSL https://bun.sh/install | bash
+# RUN apt-get update && apt-get install -y curl && curl -fsSL https://bun.sh/install | bash
 
 # 依存関係のインストール
 COPY package.json bun.lockb ./
@@ -20,12 +20,13 @@ RUN bunx prisma generate
 RUN bun run build
 
 # 実行ステージ
-FROM node:20-slim AS runner
+# FROM node:20-slim AS runner
+FROM oven/bun:latest AS runner
 
 WORKDIR /app
 
 # bunのインストール
-RUN apt-get update && apt-get install -y curl && curl -fsSL https://bun.sh/install | bash
+# RUN apt-get update && apt-get install -y curl && curl -fsSL https://bun.sh/install | bash
 
 # 必要なファイルのみをコピー
 COPY --from=builder /app/build ./build
