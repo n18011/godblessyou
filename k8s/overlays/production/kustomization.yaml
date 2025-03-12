@@ -9,23 +9,21 @@ commonLabels:
   environment: production
 
 configMapGenerator:
-- name: godblessyou-config
-  literals:
+- literals:
   - NODE_ENV=production
+  name: godblessyou-config
 
 secretGenerator:
-- name: godblessyou-secrets
-  literals:
+- literals:
   - DATABASE_URL=postgresql://postgres:postgres@localhost:5432/godblessyou_prod
+  name: godblessyou-secrets
 
 patches:
-- target:
+- patch: "- op: replace\n  path: /spec/template/spec/containers/0/image\n  value:
+    godblessyou-app:prod\n- op: replace\n  path: /spec/replicas\n  value: 3 "
+  target:
     kind: Deployment
     name: godblessyou-app
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/containers/0/image
-      value: godblessyou-app:prod
-    - op: replace
-      path: /spec/replicas
-      value: 3 
+images:
+- name: ghcr.io/n18011/godblessyou/app
+  newTag: 1646c60d8b317747afe2dda22794d3e96ed33e7c
