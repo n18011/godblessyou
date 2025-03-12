@@ -37,6 +37,9 @@ jobs:
       - name: Install dependencies
         run: bun install
 
+      - name: Set up migrate
+        run: npx prisma migrate reset --force
+
       - name: Set up Prisma
         run: npx prisma generate
       
