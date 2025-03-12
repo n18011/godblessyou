@@ -3,9 +3,8 @@ FROM node:20-slim AS builder
 
 WORKDIR /app
 
-RUN apt install -y curl
 # bunのインストール
-RUN curl -fsSL https://bun.sh/install | bash
+RUN apt-get update && apt-get install -y curl && curl -fsSL https://bun.sh/install | bash
 
 # 依存関係のインストール
 COPY package.json bun.lockb ./
@@ -26,7 +25,7 @@ FROM node:20-slim AS runner
 WORKDIR /app
 
 # bunのインストール
-RUN curl -fsSL https://bun.sh/install | bash
+RUN apt-get update && apt-get install -y curl && curl -fsSL https://bun.sh/install | bash
 
 # 必要なファイルのみをコピー
 COPY --from=builder /app/build ./build
