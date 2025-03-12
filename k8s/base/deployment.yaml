@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: godblessyou-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: godblessyou-app
+  template:
+    metadata:
+      labels:
+        app: godblessyou-app
+    spec:
+      containers:
+      - name: godblessyou-app
+        image: godblessyou-app:latest
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            cpu: 200m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: godblessyou-config
+              key: NODE_ENV
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: godblessyou-secrets
+              key: DATABASE_URL
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5 

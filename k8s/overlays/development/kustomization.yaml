@@ -2,44 +2,27 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 namespace: godblessyou-dev
-
 resources:
-  - ../../base
+- ../../base
+
+commonLabels:
+  environment: development
 
 configMapGenerator:
-  - name: frontend-config
-    literals:
-      - NODE_ENV=development
-      - API_URL=http://backend.godblessyou-dev.svc.cluster.local
-  - name: backend-config
-    literals:
-      - NODE_ENV=development
-  - name: postgres-config
-    literals:
-      - POSTGRES_DB=godblessyou
+- name: godblessyou-config
+  literals:
+  - NODE_ENV=development
 
 secretGenerator:
-  - name: backend-secrets
-    literals:
-      - DATABASE_URL=postgresql://godblessyou:godblessyou@postgres.godblessyou-dev.svc.cluster.local:5432/godblessyou
-      - JWT_SECRET=development-jwt-secret
-  - name: postgres-secrets
-    literals:
-      - POSTGRES_USER=godblessyou
-      - POSTGRES_PASSWORD=godblessyou
+- name: godblessyou-secrets
+  literals:
+  - DATABASE_URL=postgresql://postgres:postgres@localhost:5432/godblessyou_dev
 
 patches:
-  - target:
-      kind: Deployment
-      name: frontend
-    patch: |-
-      - op: replace
-        path: /spec/template/spec/containers/0/image
-        value: localhost:5000/godblessyou-frontend:dev
-  - target:
-      kind: Deployment
-      name: backend
-    patch: |-
-      - op: replace
-        path: /spec/template/spec/containers/0/image
-        value: localhost:5000/godblessyou-backend:dev 
+- target:
+    kind: Deployment
+    name: godblessyou-app
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/image
+      value: godblessyou-app:dev 
