@@ -16,6 +16,9 @@
     "@sveltejs/adapter-auto": "^4.0.0",
     "@sveltejs/kit": "^2.16.0",
     "@sveltejs/vite-plugin-svelte": "^5.0.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "dotenv": "^16.4.7",
     "prisma": "^6.5.0",
     "svelte": "^5.0.0",
     "svelte-check": "^4.0.0",
@@ -24,6 +27,8 @@
   },
   "dependencies": {
     "@types/glob": "^8.1.0",
-    "glob": "^11.0.1"
+    "bcrypt": "^5.1.1",
+    "glob": "^11.0.1",
+    "jsonwebtoken": "^9.0.2"
   }
 }
