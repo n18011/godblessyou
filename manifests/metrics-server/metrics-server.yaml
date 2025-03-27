@@ -91,7 +91,7 @@ spec:
     - name: https
       port: 443
       protocol: TCP
-      targetPort: https
+      targetPort: 4443
   selector:
     k8s-app: metrics-server
 ---
@@ -177,5 +177,6 @@ spec:
   service:
     name: metrics-server
     namespace: kube-system
+    port: 443
   version: v1beta1
   versionPriority: 100 
