@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base/app
+
+namespace: development
+
+commonLabels:
+  environment: development
+
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gbc-product
+      spec:
+        template:
+          spec:
+            containers:
+            - name: gbc-product
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 64Mi
+                limits:
+                  cpu: 100m
+                  memory: 128Mi
+
+configMapGenerator: []  # 必要に応じてConfigMapを生成
+
+secretGenerator: []  # 必要に応じてSecretを生成 
