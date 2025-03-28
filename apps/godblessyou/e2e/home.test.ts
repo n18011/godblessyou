@@ -2,11 +2,13 @@ import { test, expect } from '@playwright/test';
 
 test('home page shows welcome message', async ({ page }) => {
   await page.goto('/');
+  await page.waitForLoadState('domcontentloaded');
   await expect(page.getByRole('heading', { name: /welcome/i })).toBeVisible();
 });
 
 test('navigation works', async ({ page }) => {
   await page.goto('/');
+  await page.waitForLoadState('domcontentloaded');
   
   // メインナビゲーションのリンクをクリック
   const aboutLink = page.getByRole('link', { name: /about/i });
@@ -20,11 +22,12 @@ test('navigation works', async ({ page }) => {
 
 test('theme switching works', async ({ page }) => {
   await page.goto('/');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForLoadState('networkidle');
   
   // ダークモードボタンを探して待機
   const darkModeButton = page.getByTestId('theme-toggle');
-  await expect(darkModeButton).toBeVisible();
+  await expect(darkModeButton).toBeVisible({ timeout: 10000 });
   
   // ボタンの初期状態を確認
   await expect(darkModeButton).toContainText('Dark Mode');
@@ -38,11 +41,12 @@ test('theme switching works', async ({ page }) => {
 
 test('language switching works', async ({ page }) => {
   await page.goto('/');
+  await page.waitForLoadState('domcontentloaded');
   await page.waitForLoadState('networkidle');
   
   // 言語切り替えボタンを探して待機
   const languageButton = page.getByTestId('language-toggle');
-  await expect(languageButton).toBeVisible();
+  await expect(languageButton).toBeVisible({ timeout: 10000 });
   
   // ボタンの初期状態を確認
   await expect(languageButton).toContainText('Language');
@@ -52,7 +56,7 @@ test('language switching works', async ({ page }) => {
   
   // 日本語メニュー項目を探して待機
   const japaneseMenuItem = page.getByTestId('language-ja');
-  await expect(japaneseMenuItem).toBeVisible();
+  await expect(japaneseMenuItem).toBeVisible({ timeout: 5000 });
   
   // メニュー項目をクリック
   await japaneseMenuItem.click();

@@ -117,11 +117,15 @@
 		padding: 1rem;
 		background: var(--color-bg-0);
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		position: relative;
+		z-index: 10;
 	}
 
 	.corner {
 		width: 3em;
 		height: 3em;
+		position: relative;
+		z-index: 20;
 	}
 
 	.corner.actions {
@@ -129,15 +133,18 @@
 		display: flex;
 		gap: 1rem;
 		align-items: center;
+		padding-right: 1rem;
 	}
 
 	.theme-button,
 	.language-button {
+		position: relative;
+		z-index: 30;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
 		padding: 0.5rem 1rem;
-		border: none;
+		border: 1px solid var(--color-theme-1);
 		border-radius: 4px;
 		background: var(--color-theme-1);
 		color: white;
@@ -145,35 +152,37 @@
 		font-size: 0.8rem;
 		min-height: 2.5rem;
 		min-width: 2.5rem;
-		transition: background-color 0.2s;
+		transition: all 0.2s ease;
 	}
 
 	.button-content {
 		display: flex;
 		align-items: center;
 		gap: 0.5rem;
+		pointer-events: none;
 	}
 
 	.theme-button:hover,
 	.language-button:hover {
 		background: var(--color-theme-2);
+		border-color: var(--color-theme-2);
 	}
 
 	.language-menu {
 		position: relative;
+		z-index: 40;
 	}
 
 	.menu-items {
 		display: none;
 		position: absolute;
-		top: 100%;
+		top: calc(100% + 0.5rem);
 		right: 0;
-		margin-top: 0.5rem;
 		background: var(--color-bg-0);
 		border: 1px solid var(--color-border);
 		border-radius: 4px;
 		padding: 0.5rem;
-		z-index: 100;
+		z-index: 50;
 		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 		min-width: 150px;
 	}
@@ -194,7 +203,7 @@
 		text-align: left;
 		color: var(--color-text);
 		border-radius: 2px;
-		transition: background-color 0.2s;
+		transition: all 0.2s ease;
 	}
 
 	.menuitem:hover {
