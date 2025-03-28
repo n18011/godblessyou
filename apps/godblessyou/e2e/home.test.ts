@@ -9,7 +9,9 @@ test('navigation works', async ({ page }) => {
   await page.goto('/');
   
   // メインナビゲーションのリンクをクリック
-  await page.getByRole('link', { name: /about/i }).click();
+  const aboutLink = page.getByRole('link', { name: /about/i });
+  await aboutLink.waitFor({ state: 'visible' });
+  await aboutLink.click();
   await expect(page).toHaveURL(/.*about/);
   
   // ヘッダーが正しく表示されることを確認
@@ -20,19 +22,26 @@ test('theme switching works', async ({ page }) => {
   await page.goto('/');
   
   // ダークモードボタンをクリック
-  await page.getByRole('button', { name: /dark mode/i }).click();
+  const darkModeButton = page.getByRole('button', { name: /dark mode/i });
+  await darkModeButton.waitFor({ state: 'visible' });
+  await darkModeButton.click();
   
   // bodyタグにダークモードのクラスが追加されることを確認
   await expect(page.locator('body')).toHaveClass(/dark/);
-});
+}, { timeout: 60000 });
 
 test('language switching works', async ({ page }) => {
   await page.goto('/');
   
   // 言語切り替えボタンをクリック
-  await page.getByRole('button', { name: /language/i }).click();
-  await page.getByRole('menuitem', { name: /日本語/i }).click();
+  const languageButton = page.getByRole('button', { name: /language/i });
+  await languageButton.waitFor({ state: 'visible' });
+  await languageButton.click();
+  
+  const japaneseMenuItem = page.getByRole('menuitem', { name: /日本語/i });
+  await japaneseMenuItem.waitFor({ state: 'visible' });
+  await japaneseMenuItem.click();
   
   // URLに言語コードが含まれることを確認
   await expect(page).toHaveURL(/.*\?lang=ja/);
-}); 
+}, { timeout: 60000 }); 

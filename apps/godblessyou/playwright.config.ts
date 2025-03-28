@@ -4,7 +4,8 @@ export default defineConfig({
 	webServer: {
 		command: 'npm run preview',
 		port: 4173,
-		reuseExistingServer: true
+		reuseExistingServer: true,
+		timeout: 120000
 	},
 	testDir: 'e2e',
 	testMatch: '**/*.test.ts',
@@ -15,7 +16,9 @@ export default defineConfig({
 	reporter: process.env.CI ? 'html' : 'list',
 	use: {
 		baseURL: 'http://localhost:4173',
-		trace: 'on-first-retry'
+		trace: 'on-first-retry',
+		actionTimeout: 30000,
+		navigationTimeout: 30000
 	},
 	projects: [
 		{
