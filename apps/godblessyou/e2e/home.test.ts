@@ -20,10 +20,16 @@ test('navigation works', async ({ page }) => {
 
 test('theme switching works', async ({ page }) => {
   await page.goto('/');
+  await page.waitForLoadState('networkidle');
   
-  // ダークモードボタンをクリック
+  // ダークモードボタンを探して待機
   const darkModeButton = page.getByTestId('theme-toggle');
-  await darkModeButton.waitFor({ state: 'visible', timeout: 5000 });
+  await expect(darkModeButton).toBeVisible();
+  
+  // ボタンの初期状態を確認
+  await expect(darkModeButton).toContainText('Dark Mode');
+  
+  // ボタンをクリック
   await darkModeButton.click();
   
   // bodyタグにダークモードのクラスが追加されることを確認
@@ -32,15 +38,23 @@ test('theme switching works', async ({ page }) => {
 
 test('language switching works', async ({ page }) => {
   await page.goto('/');
+  await page.waitForLoadState('networkidle');
   
-  // 言語切り替えボタンをクリック
+  // 言語切り替えボタンを探して待機
   const languageButton = page.getByTestId('language-toggle');
-  await languageButton.waitFor({ state: 'visible', timeout: 5000 });
+  await expect(languageButton).toBeVisible();
+  
+  // ボタンの初期状態を確認
+  await expect(languageButton).toContainText('Language');
+  
+  // ボタンをクリック
   await languageButton.click();
   
-  // 日本語メニュー項目をクリック
+  // 日本語メニュー項目を探して待機
   const japaneseMenuItem = page.getByTestId('language-ja');
-  await japaneseMenuItem.waitFor({ state: 'visible', timeout: 5000 });
+  await expect(japaneseMenuItem).toBeVisible();
+  
+  // メニュー項目をクリック
   await japaneseMenuItem.click();
   
   // URLに言語コードが含まれることを確認

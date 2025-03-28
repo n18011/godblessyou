@@ -54,29 +54,37 @@
 
 	<div class="corner actions">
 		<button 
+			type="button"
 			class="theme-button" 
 			on:click={toggleTheme}
 			aria-label="Toggle dark mode"
 			data-testid="theme-toggle"
 		>
-			{isDarkMode ? '🌞' : '🌙'} Dark Mode
+			<span class="button-content">
+				{isDarkMode ? '🌞' : '🌙'} Dark Mode
+			</span>
 		</button>
 		<div class="language-menu">
 			<button 
+				type="button"
 				class="language-button"
 				on:click={toggleLanguageMenu}
 				aria-label="Toggle language menu"
 				aria-expanded={isLanguageMenuOpen}
 				data-testid="language-toggle"
 			>
-				🌐 Language
+				<span class="button-content">
+					🌐 Language
+				</span>
 			</button>
 			<div 
 				class="menu-items" 
 				class:open={isLanguageMenuOpen}
 				role="menu"
+				aria-hidden={!isLanguageMenuOpen}
 			>
 				<button 
+					type="button"
 					class="menuitem" 
 					on:click={() => switchLanguage('en')}
 					role="menuitem"
@@ -85,6 +93,7 @@
 					English
 				</button>
 				<button 
+					type="button"
 					class="menuitem" 
 					on:click={() => switchLanguage('ja')}
 					role="menuitem"
@@ -104,6 +113,10 @@
 	header {
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
+		padding: 1rem;
+		background: var(--color-bg-0);
+		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 	}
 
 	.corner {
@@ -116,11 +129,13 @@
 		display: flex;
 		gap: 1rem;
 		align-items: center;
-		padding: 0 1rem;
 	}
 
 	.theme-button,
 	.language-button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
 		padding: 0.5rem 1rem;
 		border: none;
 		border-radius: 4px;
@@ -128,6 +143,20 @@
 		color: white;
 		cursor: pointer;
 		font-size: 0.8rem;
+		min-height: 2.5rem;
+		min-width: 2.5rem;
+		transition: background-color 0.2s;
+	}
+
+	.button-content {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.theme-button:hover,
+	.language-button:hover {
+		background: var(--color-theme-2);
 	}
 
 	.language-menu {
@@ -139,11 +168,14 @@
 		position: absolute;
 		top: 100%;
 		right: 0;
-		background: white;
-		border: 1px solid #ddd;
+		margin-top: 0.5rem;
+		background: var(--color-bg-0);
+		border: 1px solid var(--color-border);
 		border-radius: 4px;
 		padding: 0.5rem;
 		z-index: 100;
+		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		min-width: 150px;
 	}
 
 	.menu-items.open {
@@ -152,21 +184,22 @@
 		gap: 0.5rem;
 	}
 
-	/* Remove hover-based menu display */
-	.language-menu:hover .menu-items {
-		display: none;
-	}
-
 	.menuitem {
+		width: 100%;
 		border: none;
 		background: none;
 		padding: 0.5rem 1rem;
 		cursor: pointer;
 		white-space: nowrap;
+		text-align: left;
+		color: var(--color-text);
+		border-radius: 2px;
+		transition: background-color 0.2s;
 	}
 
 	.menuitem:hover {
-		background: #f0f0f0;
+		background: var(--color-theme-1);
+		color: white;
 	}
 
 	.corner a {
