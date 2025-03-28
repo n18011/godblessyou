@@ -121,6 +121,6 @@ jobs:
 
       - name: Deploy to staging
         run: |
-          cd apps/godblessyou/k8s/overlays/staging
+          cd overlays/staging
           kustomize edit set image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}
           kubectl apply -k . 
