@@ -8,46 +8,38 @@ import { fileURLToPath } from 'node:url';
 const dirname =
 	typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url));
 
-const plugins = [
-	tailwindcss(),
-	sveltekit(),
-	paraglideVitePlugin({
-		project: './project.inlang',
-		outdir: './src/lib/paraglide'
-	})
-];
-
-// テスト環境の場合のみsvleteTestingプラグインを追加
-if (process.env.NODE_ENV === 'test') {
-	const { svelteTesting } = await import('@testing-library/svelte/vite');
-	plugins.push(svelteTesting());
-}
-
 // More info at: https://storybook.js.org/docs/writing-tests/test-addon
 export default defineConfig({
-	plugins,
+	plugins: [
+		tailwindcss(),
+		sveltekit(),
+		paraglideVitePlugin({
+			project: './project.inlang',
+			outdir: './src/lib/paraglide'
+		})
+	],
 	test: {
-		workspace: [
-			{
-				extends: './vite.config.ts',
-				test: {
-					name: 'client',
-					environment: 'jsdom',
-					clearMocks: true,
-					include: ['src/**/*.svelte.{test,spec}.{js,ts}'],
-					exclude: ['src/lib/server/**'],
-					setupFiles: ['./vitest-setup-client.ts']
-				}
-			},
-			{
-				extends: './vite.config.ts',
-				test: {
-					name: 'server',
-					environment: 'node',
-					include: ['src/**/*.{test,spec}.{js,ts}'],
-					exclude: ['src/**/*.svelte.{test,spec}.{js,ts}']
-				}
-			}
-		]
+		environment: 'jsdom',
+		include: ['src/**/*.{test,spec}.{js,ts}'],
+		exclude: ['src/lib/server/**'],
+		setupFiles: ['./vitest-setup-client.ts'],
+		coverage: {
+			provider: 'v8',
+			reporter: ['text', 'json', 'html'],
+			exclude: [
+				'coverage/**',
+				'dist/**',
+				'**/[.]**',
+				'packages/*/test{,s}/**',
+				'**/*.d.ts',
+				'test{,s}/**',
+				'test{,-*}.{js,cjs,mjs,ts,tsx,jsx}',
+				'**/*{.,-}test.{js,cjs,mjs,ts,tsx,jsx}',
+				'**/*{.,-}spec.{js,cjs,mjs,ts,tsx,jsx}',
+				'**/__tests__/**',
+				'**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc}.config.*',
+				'**/.{eslint,mocha,prettier}rc.{js,cjs,yml}'
+			]
+		}
 	}
 });
