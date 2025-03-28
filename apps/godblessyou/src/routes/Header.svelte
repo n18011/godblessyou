@@ -5,14 +5,20 @@
 
 	let isDarkMode = false;
 	let currentLang = 'en';
+	let isLanguageMenuOpen = false;
 
 	function toggleTheme() {
 		isDarkMode = !isDarkMode;
 		document.body.classList.toggle('dark');
 	}
 
+	function toggleLanguageMenu() {
+		isLanguageMenuOpen = !isLanguageMenuOpen;
+	}
+
 	function switchLanguage(lang: string) {
 		currentLang = lang;
+		isLanguageMenuOpen = false;
 		const url = new URL(window.location.href);
 		url.searchParams.set('lang', lang);
 		window.history.pushState({}, '', url.toString());
@@ -47,16 +53,45 @@
 	</nav>
 
 	<div class="corner actions">
-		<button class="theme-button" on:click={toggleTheme}>
+		<button 
+			class="theme-button" 
+			on:click={toggleTheme}
+			aria-label="Toggle dark mode"
+			data-testid="theme-toggle"
+		>
 			{isDarkMode ? '🌞' : '🌙'} Dark Mode
 		</button>
 		<div class="language-menu">
-			<button class="language-button">
+			<button 
+				class="language-button"
+				on:click={toggleLanguageMenu}
+				aria-label="Toggle language menu"
+				aria-expanded={isLanguageMenuOpen}
+				data-testid="language-toggle"
+			>
 				🌐 Language
 			</button>
-			<div class="menu-items">
-				<button class="menuitem" on:click={() => switchLanguage('en')}>English</button>
-				<button class="menuitem" on:click={() => switchLanguage('ja')}>日本語</button>
+			<div 
+				class="menu-items" 
+				class:open={isLanguageMenuOpen}
+				role="menu"
+			>
+				<button 
+					class="menuitem" 
+					on:click={() => switchLanguage('en')}
+					role="menuitem"
+					data-testid="language-en"
+				>
+					English
+				</button>
+				<button 
+					class="menuitem" 
+					on:click={() => switchLanguage('ja')}
+					role="menuitem"
+					data-testid="language-ja"
+				>
+					日本語
+				</button>
 			</div>
 		</div>
 		<a href="https://github.com/sveltejs/kit">
@@ -108,12 +143,18 @@
 		border: 1px solid #ddd;
 		border-radius: 4px;
 		padding: 0.5rem;
+		z-index: 100;
 	}
 
-	.language-menu:hover .menu-items {
+	.menu-items.open {
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
+	}
+
+	/* Remove hover-based menu display */
+	.language-menu:hover .menu-items {
+		display: none;
 	}
 
 	.menuitem {
