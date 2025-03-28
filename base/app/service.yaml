@@ -1,12 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: gbc-product
+  name: godblessyou
 spec:
+  ports:
+  - port: 80
+    targetPort: 3000
+    nodePort: 30090
+    protocol: TCP
   selector:
     app: gbc-product
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8000
-  type: ClusterIP 
+  type: NodePort 

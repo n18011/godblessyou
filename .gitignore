@@ -89,3 +89,6 @@ dump.sql
 .yarn/
 .pnpm/
 .cache/
+
+# applications
+apps/

@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../base/app
+  - ../../base/postgresql
 
 namespace: development
 
@@ -10,7 +11,10 @@ commonLabels:
   environment: development
 
 patches:
-  - patch: |-
+  - target:
+      kind: Deployment
+      name: gbc-product
+    patch: |-
       apiVersion: apps/v1
       kind: Deployment
       metadata:
