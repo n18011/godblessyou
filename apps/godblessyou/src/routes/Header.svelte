@@ -2,6 +2,21 @@
 	import { page } from '$app/state';
 	import logo from '$lib/images/svelte-logo.svg';
 	import github from '$lib/images/github.svg';
+
+	let isDarkMode = false;
+	let currentLang = 'en';
+
+	function toggleTheme() {
+		isDarkMode = !isDarkMode;
+		document.body.classList.toggle('dark');
+	}
+
+	function switchLanguage(lang: string) {
+		currentLang = lang;
+		const url = new URL(window.location.href);
+		url.searchParams.set('lang', lang);
+		window.history.pushState({}, '', url.toString());
+	}
 </script>
 
 <header>
@@ -31,7 +46,19 @@
 		</svg>
 	</nav>
 
-	<div class="corner">
+	<div class="corner actions">
+		<button class="theme-button" on:click={toggleTheme}>
+			{isDarkMode ? '🌞' : '🌙'} Dark Mode
+		</button>
+		<div class="language-menu">
+			<button class="language-button">
+				🌐 Language
+			</button>
+			<div class="menu-items">
+				<button class="menuitem" on:click={() => switchLanguage('en')}>English</button>
+				<button class="menuitem" on:click={() => switchLanguage('ja')}>日本語</button>
+			</div>
+		</div>
 		<a href="https://github.com/sveltejs/kit">
 			<img src={github} alt="GitHub" />
 		</a>
@@ -47,6 +74,58 @@
 	.corner {
 		width: 3em;
 		height: 3em;
+	}
+
+	.corner.actions {
+		width: auto;
+		display: flex;
+		gap: 1rem;
+		align-items: center;
+		padding: 0 1rem;
+	}
+
+	.theme-button,
+	.language-button {
+		padding: 0.5rem 1rem;
+		border: none;
+		border-radius: 4px;
+		background: var(--color-theme-1);
+		color: white;
+		cursor: pointer;
+		font-size: 0.8rem;
+	}
+
+	.language-menu {
+		position: relative;
+	}
+
+	.menu-items {
+		display: none;
+		position: absolute;
+		top: 100%;
+		right: 0;
+		background: white;
+		border: 1px solid #ddd;
+		border-radius: 4px;
+		padding: 0.5rem;
+	}
+
+	.language-menu:hover .menu-items {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.menuitem {
+		border: none;
+		background: none;
+		padding: 0.5rem 1rem;
+		cursor: pointer;
+		white-space: nowrap;
+	}
+
+	.menuitem:hover {
+		background: #f0f0f0;
 	}
 
 	.corner a {
