@@ -38,8 +38,14 @@ jobs:
           npx playwright install --with-deps chromium
           npx playwright install-deps chromium
 
+      - name: Build application
+        run: npm run build
+
       - name: Run E2E tests
-        run: xvfb-run --auto-servernum -- npm run test:e2e
+        run: |
+          npm run preview &
+          sleep 5
+          npm run test:e2e
 
       - name: Upload test results
         if: always()
