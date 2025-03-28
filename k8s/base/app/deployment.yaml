@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gbc-product
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gbc-product
+  template:
+    metadata:
+      labels:
+        app: gbc-product
+    spec:
+      containers:
+      - name: gbc-product
+        image: gbc-product:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: postgresql-secret
+              key: database-url
+        - name: NODE_ENV
+          value: "production" 

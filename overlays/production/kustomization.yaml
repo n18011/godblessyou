@@ -3,13 +3,40 @@ kind: Kustomization
 
 resources:
   - ../../base/app
+  - ../../base/postgresql
 
 namespace: production
 
 commonLabels:
   environment: production
 
-patches: []  # 必要に応じてパッチを追加
+patches:
+  - target:
+      kind: Deployment
+      name: gbc-product
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: gbc-product
+      spec:
+        template:
+          spec:
+            containers:
+            - name: gbc-product
+              resources:
+                requests:
+                  cpu: 200m
+                  memory: 256Mi
+                limits:
+                  cpu: 500m
+                  memory: 512Mi
+              securityContext:
+                runAsNonRoot: true
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop:
+                    - ALL
 
 configMapGenerator: []  # 必要に応じてConfigMapを生成
 
