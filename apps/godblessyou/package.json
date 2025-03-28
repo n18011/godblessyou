@@ -14,7 +14,7 @@
 		"lint": "prettier --check . && eslint .",
 		"test:unit": "vitest run",
 		"test": "npm run test:unit && npm run test:e2e",
-		"test:e2e": "playwright test"
+		"test:e2e": "npm run build && playwright test"
 	},
 	"devDependencies": {
 		"@fontsource/fira-mono": "^5.0.0",
