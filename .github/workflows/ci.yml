@@ -33,13 +33,13 @@ jobs:
       - name: Run unit tests
         run: npm run test:unit
 
+      - name: Build application
+        run: npm run build
+
       - name: Install Playwright browsers
         run: |
           npx playwright install --with-deps chromium
           npx playwright install-deps chromium
-
-      - name: Build application
-        run: npm run build
 
       - name: Run E2E tests
         run: |
@@ -47,6 +47,8 @@ jobs:
             echo "Port 4173 is already in use. Killing the process..."
             kill $(lsof -t -i:4173) || true
           fi
+          npm run preview &
+          sleep 5
           xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- npx playwright test --project=chromium
 
       - name: Upload test results
