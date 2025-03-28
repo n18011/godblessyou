@@ -53,59 +53,61 @@
 	</nav>
 
 	<div class="corner actions">
-		<button 
-			type="button"
-			class="theme-button" 
-			on:click={toggleTheme}
-			aria-label="Toggle dark mode"
-			data-testid="theme-toggle"
-		>
-			<span class="button-content">
-				{isDarkMode ? '🌞' : '🌙'} Dark Mode
-			</span>
-		</button>
-		<div class="language-menu">
+		<div class="button-container">
 			<button 
 				type="button"
-				class="language-button"
+				class="action-button"
+				on:click={toggleTheme}
+				aria-label="Toggle dark mode"
+				data-testid="theme-toggle"
+			>
+				{isDarkMode ? '🌞' : '🌙'} Dark Mode
+			</button>
+		</div>
+
+		<div class="button-container">
+			<button 
+				type="button"
+				class="action-button"
 				on:click={toggleLanguageMenu}
 				aria-label="Toggle language menu"
 				aria-expanded={isLanguageMenuOpen}
 				data-testid="language-toggle"
 			>
-				<span class="button-content">
-					🌐 Language
-				</span>
+				🌐 Language
 			</button>
-			<div 
-				class="menu-items" 
-				class:open={isLanguageMenuOpen}
-				role="menu"
-				aria-hidden={!isLanguageMenuOpen}
-			>
-				<button 
-					type="button"
-					class="menuitem" 
-					on:click={() => switchLanguage('en')}
-					role="menuitem"
-					data-testid="language-en"
+			{#if isLanguageMenuOpen}
+				<div 
+					class="menu-items"
+					role="menu"
 				>
-					English
-				</button>
-				<button 
-					type="button"
-					class="menuitem" 
-					on:click={() => switchLanguage('ja')}
-					role="menuitem"
-					data-testid="language-ja"
-				>
-					日本語
-				</button>
-			</div>
+					<button 
+						type="button"
+						class="menuitem" 
+						on:click={() => switchLanguage('en')}
+						role="menuitem"
+						data-testid="language-en"
+					>
+						English
+					</button>
+					<button 
+						type="button"
+						class="menuitem" 
+						on:click={() => switchLanguage('ja')}
+						role="menuitem"
+						data-testid="language-ja"
+					>
+						日本語
+					</button>
+				</div>
+			{/if}
 		</div>
-		<a href="https://github.com/sveltejs/kit">
-			<img src={github} alt="GitHub" />
-		</a>
+
+		<div class="button-container">
+			<a href="https://github.com/sveltejs/kit">
+				<img src={github} alt="GitHub" />
+			</a>
+		</div>
 	</div>
 </header>
 
@@ -117,15 +119,11 @@
 		padding: 1rem;
 		background: var(--color-bg-0);
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-		position: relative;
-		z-index: 10;
 	}
 
 	.corner {
 		width: 3em;
 		height: 3em;
-		position: relative;
-		z-index: 20;
 	}
 
 	.corner.actions {
@@ -133,61 +131,41 @@
 		display: flex;
 		gap: 1rem;
 		align-items: center;
-		padding-right: 1rem;
 	}
 
-	.theme-button,
-	.language-button {
+	.button-container {
 		position: relative;
-		z-index: 30;
+	}
+
+	.action-button {
 		display: inline-flex;
 		align-items: center;
-		justify-content: center;
+		gap: 0.5rem;
 		padding: 0.5rem 1rem;
-		border: 1px solid var(--color-theme-1);
+		border: none;
 		border-radius: 4px;
 		background: var(--color-theme-1);
 		color: white;
 		cursor: pointer;
 		font-size: 0.8rem;
 		min-height: 2.5rem;
-		min-width: 2.5rem;
-		transition: all 0.2s ease;
 	}
 
-	.button-content {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		pointer-events: none;
-	}
-
-	.theme-button:hover,
-	.language-button:hover {
+	.action-button:hover {
 		background: var(--color-theme-2);
-		border-color: var(--color-theme-2);
-	}
-
-	.language-menu {
-		position: relative;
-		z-index: 40;
 	}
 
 	.menu-items {
-		display: none;
 		position: absolute;
-		top: calc(100% + 0.5rem);
+		top: 100%;
 		right: 0;
+		margin-top: 0.5rem;
 		background: var(--color-bg-0);
 		border: 1px solid var(--color-border);
 		border-radius: 4px;
 		padding: 0.5rem;
-		z-index: 50;
 		box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 		min-width: 150px;
-	}
-
-	.menu-items.open {
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
@@ -199,11 +177,9 @@
 		background: none;
 		padding: 0.5rem 1rem;
 		cursor: pointer;
-		white-space: nowrap;
 		text-align: left;
 		color: var(--color-text);
 		border-radius: 2px;
-		transition: all 0.2s ease;
 	}
 
 	.menuitem:hover {
