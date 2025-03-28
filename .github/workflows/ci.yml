@@ -36,7 +36,7 @@ jobs:
       - name: Upload coverage reports
         uses: codecov/codecov-action@v4
         with:
-          directory: ./coverage
+          directory: apps/godblessyou/coverage
           flags: unittests
 
       - name: Install Playwright browsers
@@ -51,8 +51,8 @@ jobs:
         with:
           name: test-results
           path: |
-            test-results/
-            playwright-report/
+            apps/godblessyou/test-results/
+            apps/godblessyou/playwright-report/
           retention-days: 30
 
   build:
@@ -61,6 +61,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+    if: github.ref == 'refs/heads/main'
 
     steps:
       - uses: actions/checkout@v4
@@ -81,9 +82,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
-            type=ref,event=pr
             type=sha,format=long
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -115,6 +115,6 @@ jobs:
 
       - name: Deploy to staging
         run: |
-          cd k8s/overlays/staging
+          cd apps/godblessyou/k8s/overlays/staging
           kustomize edit set image ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}
           kubectl apply -k . 
