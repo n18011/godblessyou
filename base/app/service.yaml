@@ -6,7 +6,8 @@ spec:
   ports:
   - port: 80
     targetPort: 3000
+    nodePort: 30090
     protocol: TCP
   selector:
-    app: godblessyou
-  type: ClusterIP 
+    app: gbc-product
+  type: NodePort 
